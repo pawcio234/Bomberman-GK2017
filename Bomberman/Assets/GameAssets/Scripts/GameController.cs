@@ -6,14 +6,31 @@ using UnityEngine.Networking;
 public class GameController : NetworkBehaviour {
 
     public GameObject levelHolder;
-    public const int X = 22;
-    public const int Y = 13;
-    public GameObject[,] level = new GameObject[X, Y];
+    public int length;
+    public int width;
+    public static int X;
+    public static int Y;
+    public GameObject[,] level;
 
     // Use this for initialization
     void Start()
     {
+        X = (length == 22) ? 22 : ((length == 13) ? 14 : ((length == 25) ? 26 : 0));//22;
+        Y = (width == 13) ? 13 : ((width == 15) ? 15 : 0);//13;
+        level = new GameObject[X, Y];
+        Debug.Log("X wynosi: " + X);
+        Debug.Log("Y wynosi: " + Y);
         LevelScan();
+    }
+
+    public int GetX()
+    {
+        return X;
+    }
+
+    public int GetY()
+    {
+        return Y;
     }
 
     public void LevelScan()
@@ -22,6 +39,7 @@ public class GameController : NetworkBehaviour {
 
         foreach (var child in objects)
         {
+            Debug.Log("cos");
             level[(int)child.position.x, (int)child.position.y] = child.gameObject;
         }
 

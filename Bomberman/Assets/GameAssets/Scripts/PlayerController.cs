@@ -17,18 +17,45 @@ public class PlayerController : NetworkBehaviour {
             numberOfPlayers++;
             Destroy(gameObject);
         }
+        int positionTableOffset;
+        int x = GameObject.Find("GameController").GetComponent<GameController>().GetX();
+        if (x == 14)
+        {
+            positionTableOffset = 0;
+        }
+        else if(x == 22)
+        {
+            positionTableOffset = 4;
+        }
+        else if(x == 26)
+        {
+            positionTableOffset = 8;
+        }
+        else
+        {
+            positionTableOffset = 0;
+           Debug.Log("cos jest zle " + x);
+        }
 
         rb2d = GetComponent<Rigidbody2D>();
         GameObject.Find("GameController").GetComponent<GameController>().LevelScan();
         int playerIndex = numberOfPlayers;
         GetComponent<SpriteRenderer>().sprite = sprites[playerIndex];
-        transform.position = spawnPositions[playerIndex];
+        transform.position = spawnPositions[playerIndex + positionTableOffset];
         numberOfPlayers++;
 	}
 
     void OnDestroy()
     {
         numberOfPlayers--;
+        if(numberOfPlayers > 0)
+        {
+            Debug.Log("You lost!");
+        }
+        else
+        {
+            Debug.Log("Draw!");
+        }
     }
     
     //public override void OnStartLocalPlayer()
@@ -39,10 +66,14 @@ public class PlayerController : NetworkBehaviour {
     // Update is called once per frame
     void Update () {
         if (!isLocalPlayer)
-        {
+        {   
             return;
         }
 
+        if (numberOfPlayers == 1)
+        {
+            Debug.Log("You won!");
+        }
         //Get input from player
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
