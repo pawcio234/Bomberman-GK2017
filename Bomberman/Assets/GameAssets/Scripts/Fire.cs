@@ -34,11 +34,13 @@ public class Fire : MonoBehaviour
             collision.gameObject.GetComponent<Bomb>().Explode();
         }
         // LIFE BONUS LOGIC, NOT SURE IF WORKS AS EXPECTED !!!
-        else if(collision.gameObject.GetComponent<PlayerController>() != null)
+        else if(collision.gameObject.tag == "Player")
         {
-            if (collision.gameObject.GetComponent<PlayerController>().life > 1)
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+
+            if (playerController.life >= 1)
             {
-                collision.gameObject.GetComponent<PlayerController>().life--;
+                playerController.life--;
                 return;
             }
         }
