@@ -6,6 +6,7 @@ public class PowerUp : MonoBehaviour
     public int bombs;
     public int firePower;
     public int speed;
+    public int life;
 
     GameController gameController;
 
@@ -26,6 +27,7 @@ public class PowerUp : MonoBehaviour
 
             //adjust the values
             playerController.speed += speed;
+            playerController.life += life;
             BombSpawner.numberOfBombs += bombs;
             BombSpawner.firePower += firePower;
 

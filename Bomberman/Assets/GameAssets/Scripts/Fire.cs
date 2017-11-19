@@ -33,6 +33,15 @@ public class Fire : MonoBehaviour
         {
             collision.gameObject.GetComponent<Bomb>().Explode();
         }
+        // LIFE BONUS LOGIC, NOT SURE IF WORKS AS EXPECTED !!!
+        else if(collision.gameObject.GetComponent<PlayerController>() != null)
+        {
+            if (collision.gameObject.GetComponent<PlayerController>().life > 1)
+            {
+                collision.gameObject.GetComponent<PlayerController>().life--;
+                return;
+            }
+        }
 
         //Remove the thing we collided with.
         Destroy(collision.gameObject);

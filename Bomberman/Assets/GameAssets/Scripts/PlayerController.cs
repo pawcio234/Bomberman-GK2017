@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 
 public class PlayerController : NetworkBehaviour {
     public float speed;
+    public int life;
     private Rigidbody2D rb2d;
 
     static int numberOfPlayers;
