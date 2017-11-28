@@ -11,15 +11,12 @@ public class GameController : NetworkBehaviour {
     public static int X;
     public static int Y;
     public GameObject[,] level;
-
     // Use this for initialization
     void Start()
     {
         X = (length == 22) ? 22 : ((length == 13) ? 14 : ((length == 25) ? 26 : 0));//22;
         Y = (width == 13) ? 13 : ((width == 15) ? 15 : 0);//13;
         level = new GameObject[X, Y];
-        Debug.Log("X wynosi: " + X);
-        Debug.Log("Y wynosi: " + Y);
         LevelScan();
     }
 
@@ -39,7 +36,6 @@ public class GameController : NetworkBehaviour {
 
         foreach (var child in objects)
         {
-            Debug.Log("cos");
             level[(int)child.position.x, (int)child.position.y] = child.gameObject;
         }
 

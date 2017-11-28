@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 
@@ -6,13 +7,22 @@ public class PlayerController : NetworkBehaviour {
     public float speed;
     public int life;
     private Rigidbody2D rb2d;
+    private GameObject gameover;
 
     static int numberOfPlayers;
     public Sprite[] sprites;
     public Vector3[] spawnPositions;
+    private int HowManyPlayers;
+    
 
 	// Use this for initialization
 	void Start () {
+        //get the number of connected players
+        gameover = GameObject.Find("GameOverText");
+
+        gameover.GetComponent<Text>().enabled = false;
+        HowManyPlayers = Network.connections.Length;
+        Debug.Log(HowManyPlayers);
         if (numberOfPlayers >= 4)
         {
             numberOfPlayers++;
@@ -49,13 +59,26 @@ public class PlayerController : NetworkBehaviour {
     void OnDestroy()
     {
         numberOfPlayers--;
-        if(numberOfPlayers > 0)
+        if(HowManyPlayers > 0)
         {
-            Debug.Log("You lost!");
+            if(numberOfPlayers == 0)
+            {
+                Debug.Log("Draw!");
+            }
+            else
+            {
+                
+                Debug.Log("You lost!");
+            }
         }
+        //int i = Application.loadedLevel; tak się przechodzi do nastepnej rundy ale trzeba wszystko przeładować kurde
+        //Application.LoadLevel(i + 1);
         else
         {
-            Debug.Log("Draw!");
+            gameover.GetComponent<Text>().text = "Game over!";
+            gameover.GetComponent<Text>().enabled = true;
+            Debug.Log("You lost!");
+            Application.LoadLevel("mainMenu");
         }
     }
     
@@ -66,14 +89,18 @@ public class PlayerController : NetworkBehaviour {
 
     // Update is called once per frame
     void Update () {
+        HowManyPlayers = Network.connections.Length;
         if (!isLocalPlayer)
         {   
             return;
         }
 
-        if (numberOfPlayers == 1)
+        if (HowManyPlayers > 0)
         {
-            Debug.Log("You won!");
+            if (numberOfPlayers == 1)
+            {
+                Debug.Log("You won!");
+            }
         }
         //Get input from player
         float x = Input.GetAxisRaw("Horizontal");
